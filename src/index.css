@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", sans-serif;
+}
+
+:root {
+  --bg-app: #F2F2F7;
+  --text-app: #000000;
+  
+  --bg-gradient-1: radial-gradient(at 15% 15%, hsla(210,100%,93%,0.6) 0px, transparent 50%);
+  --bg-gradient-2: radial-gradient(at 85% 10%, hsla(189,100%,93%,0.6) 0px, transparent 50%);
+  --bg-gradient-3: radial-gradient(at 50% 50%, hsla(333,100%,96%,0.6) 0px, transparent 70%);
+  --bg-gradient-4: radial-gradient(at 10% 90%, hsla(280,100%,96%,0.6) 0px, transparent 50%);
+  --bg-gradient-5: radial-gradient(at 90% 90%, hsla(22,100%,92%,0.6) 0px, transparent 50%);
+
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 12px 40px rgba(30, 58, 138, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+
+  --glass-button-bg: rgba(255, 255, 255, 0.85);
+  --glass-button-border: rgba(255, 255, 255, 0.6);
+  
+  --glass-dark-bg: rgba(255, 255, 255, 0.6);
+  --glass-dark-border: rgba(255, 255, 255, 0.5);
+  --glass-dark-shadow: 0 16px 48px rgba(30, 58, 138, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+
+  --gradient-text: linear-gradient(135deg, #007AFF 0%, #34C759 100%);
+}
+
+.dark {
+  --bg-app: #0B1120;
+  --text-app: #FFFFFF;
+
+  --bg-gradient-1: radial-gradient(at 15% 15%, rgba(56, 189, 248, 0.15) 0px, transparent 60%);
+  --bg-gradient-2: radial-gradient(at 85% 10%, rgba(99, 102, 241, 0.1) 0px, transparent 50%);
+  --bg-gradient-3: radial-gradient(at 50% 50%, rgba(139, 92, 246, 0.1) 0px, transparent 70%);
+  --bg-gradient-4: radial-gradient(at 10% 90%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
+  --bg-gradient-5: radial-gradient(at 90% 90%, rgba(59, 130, 246, 0.1) 0px, transparent 50%);
+
+  --glass-bg: rgba(15, 23, 42, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  --glass-button-bg: rgba(30, 41, 59, 0.6);
+  --glass-button-border: rgba(255, 255, 255, 0.1);
+
+  --glass-dark-bg: rgba(15, 23, 42, 0.6);
+  --glass-dark-border: rgba(255, 255, 255, 0.05);
+  --glass-dark-shadow: 0 24px 64px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  --gradient-text: linear-gradient(135deg, #38BDF8 0%, #818CF8 100%);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 150, 0.3);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 150, 150, 0.5);
+}
+
+body {
+  background-color: var(--bg-app);
+  background-image: 
+    var(--bg-gradient-1),
+    var(--bg-gradient-2),
+    var(--bg-gradient-3),
+    var(--bg-gradient-4),
+    var(--bg-gradient-5);
+  background-attachment: fixed;
+  color: var(--text-app);
+  transition: background-color 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(48px);
+  -webkit-backdrop-filter: blur(48px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass-panel-dark {
+  background: var(--glass-dark-bg);
+  backdrop-filter: blur(48px);
+  -webkit-backdrop-filter: blur(48px);
+  border: 1px solid var(--glass-dark-border);
+  box-shadow: var(--glass-dark-shadow);
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass-button {
+  background: var(--glass-button-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-button-border);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass-button:hover {
+  transform: scale(1.02);
+}
+
+.glass-button:active {
+  transform: scale(0.98);
+}
+
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-yellow {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark .gradient-yellow {
+  background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Remove number input spinners */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Custom Date Input Styling */
+.custom-date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.custom-date-input {
+  position: relative;
+}
+
+[type="date"]::-webkit-inner-spin-button,
+[type="date"]::-webkit-calendar-picker-indicator {
+  display: block;
+  -webkit-appearance: none;
+}

@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow public access to users and their medications
+    // This is required because we removed Firebase Auth for a "simpler" entry process
+    match /users/{userId} {
+      allow read, write: if true;
+      
+      match /medications/{medId} {
+        allow read, write: if true;
+      }
+    }
+    
+    // Allow listing users for the admin portal
+    match /users {
+      allow list: if true;
+    }
+
+    match /news/{newsId} {
+      allow read, write: if true;
+    }
+
+    match /videos/{videoId} {
+      allow read, write: if true;
+    }
+
+    // Default deny for everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

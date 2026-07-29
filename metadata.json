@@ -1,0 +1,9 @@
+{
+  "name": "BIGUS",
+  "description": "AI-powered treatment adherence platform that motivates patients to complete medical courses through scientific context and personalized tracking.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}
