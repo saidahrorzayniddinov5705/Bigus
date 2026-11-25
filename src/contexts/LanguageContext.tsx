@@ -9,8 +9,28 @@ type LanguageContextType = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+const VALID_LANGUAGES: Language[] = ['uz', 'uz-cyrl', 'ru', 'en'];
+
+const getInitialLanguage = (): Language => {
+  if (typeof window === 'undefined') return 'uz';
+  const saved = localStorage.getItem('language');
+  return (VALID_LANGUAGES as string[]).includes(saved || '') ? (saved as Language) : 'uz';
+};
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<Language>('uz');
+  // Previously this always reset to Uzbek on every reload — a patient who
+  // picked Russian or English would be switched back to Uzbek every time
+  // they reopened the app.
+  const [language, setLanguageState] = useState<Language>(getInitialLanguage);
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    try {
+      localStorage.setItem('language', lang);
+    } catch (e) {
+      // ignore (e.g. private browsing storage restrictions)
+    }
+  };
 
   const t = (key: keyof typeof translations) => {
     return translations[key]?.[language] || translations[key]?.en || key;
