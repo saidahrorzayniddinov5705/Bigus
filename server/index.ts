@@ -686,7 +686,9 @@ if (!(db.prepare('SELECT COUNT(*) c FROM staff').get() as any).c) {
 
 setInterval(cleanupSessions, 3600_000);
 const PORT = Number(process.env.PORT || 4000);
-app.listen(PORT, () => {
+// On a public server set HOST=127.0.0.1 so only nginx (HTTPS) can reach the app.
+const HOST = process.env.HOST || '0.0.0.0';
+app.listen(PORT, HOST, () => {
   console.log(`BIGUS server: http://localhost:${PORT}  (baza: ${DB_PATH})`);
   startTelegram();
 });

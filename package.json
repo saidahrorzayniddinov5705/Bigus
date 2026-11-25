@@ -12,7 +12,8 @@
     "migrate": "tsx server/migrate-from-firebase.ts",
     "lint": "tsc --noEmit",
     "demo:seed": "tsx server/seed-demo.ts",
-    "demo": "tsx server/demo.ts"
+    "demo": "tsx server/demo.ts",
+    "backup": "tsx server/backup.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.14.0",
