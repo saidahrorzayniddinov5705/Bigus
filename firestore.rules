@@ -1,21 +1,49 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow public access to users and their medications
-    // This is required because we removed Firebase Auth for a "simpler" entry process
+    // Patients now sign in with Firebase Authentication (name + birth date +
+    // a personal PIN), so request.auth.uid reliably identifies which patient
+    // is making the request. A patient can only create/update their OWN
+    // profile and their OWN medication records — no one else's, even if they
+    // know (or guess) another patient's id.
+    //
+    // Reads, and patient deletion / medication assignment, are left open
+    // because the doctor/admin panel does not yet have its own real sign-in
+    // (it's a separate, not-yet-secured piece of work) — Firestore rules
+    // have no way to tell "the doctor" apart from anyone else without it.
+    // Closing that remaining gap requires giving the admin panel real
+    // authentication too.
     match /users/{userId} {
-      allow read, write: if true;
-      
+      allow read: if true;
+      allow create, update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if true;
+
       match /medications/{medId} {
-        allow read, write: if true;
+        allow read: if true;
+        allow create, delete: if true;
+        allow update: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Shop redemption requests — a patient can only file a request under
+      // their own account; the admin panel (see note above) reads/manages
+      // these without its own auth yet, same as everything else it touches.
+      match /redemptions/{redemptionId} {
+        allow read: if true;
+        allow create: if request.auth != null && request.auth.uid == userId;
+        allow update, delete: if true;
       }
     }
-    
+
     // Allow listing users for the admin portal
     match /users {
       allow list: if true;
     }
 
+    // Admin has no real login yet, so these can't be restricted to
+    // "admin only" — left as before. The stored-XSS risk this used to carry
+    // (arbitrary HTML in a video record) is now closed at the app level:
+    // videos only ever render a YouTube ID through a fixed iframe template,
+    // never raw HTML from the database.
     match /news/{newsId} {
       allow read, write: if true;
     }

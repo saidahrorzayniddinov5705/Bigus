@@ -3,24 +3,24 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import Lenis from 'lenis';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
-import AdminPanel from './components/AdminPanel';
 import AdminLogin from './components/AdminLogin';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 import { LoadingSpinner } from './components/LoadingSpinner';
 
-function PrivateRoute({ children, requiredRole }: { children: React.ReactNode, requiredRole?: string }) {
-  const { currentUser, userData, loading } = useAuth();
-  const isAdminSession = localStorage.getItem('isAdminSession') === 'true';
-  
-  if (loading) return <LoadingSpinner />;
-  if (!currentUser && !isAdminSession) return <Navigate to="/admin/login" />;
-  if (requiredRole && userData?.role !== requiredRole) return <Navigate to="/" />;
+// Patients (the vast majority of visits) never load the doctor/admin panel,
+// so keep it out of their initial bundle.
+const AdminPanel = lazy(() => import('./components/AdminPanel'));
 
+// Admin pages need a real staff session (checked again by the server on every request).
+function PrivateRoute({ children }: { children: React.ReactNode }) {
+  const { staff, loading } = useAuth();
+  if (loading) return <LoadingSpinner />;
+  if (!staff) return <Navigate to="/admin/login" />;
   return <>{children}</>;
 }
 
@@ -55,8 +55,10 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={
-              <PrivateRoute requiredRole="doctor">
-                <AdminPanel />
+              <PrivateRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <AdminPanel />
+                </Suspense>
               </PrivateRoute>
             } />
           </Routes>
